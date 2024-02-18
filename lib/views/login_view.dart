@@ -68,10 +68,10 @@ class _LoginViewState extends State<LoginView> {
                         final password = _password.text;
 
                         try {
-                        final userCredentials = await FirebaseAuth.instance
-                            .signInWithEmailAndPassword(
-                                email: email, password: password);
-                        print(userCredentials);
+                          final userCredentials = await FirebaseAuth.instance
+                              .signInWithEmailAndPassword(
+                                  email: email, password: password);
+                          print(userCredentials);
                         } on FirebaseAuthException catch (e) {
                           // print(e.code);
                           if (e.code == 'invalid-credential') {
@@ -86,6 +86,12 @@ class _LoginViewState extends State<LoginView> {
                         }
                       },
                       child: const Text('Login')),
+                  TextButton(
+                      onPressed: () async {
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            '/register/', (route) => false);
+                      },
+                      child: const Text('Not registered yet? Register here.'))
                 ]);
               default:
                 return const Text('Loading...');
