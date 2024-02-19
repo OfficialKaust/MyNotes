@@ -17,7 +17,7 @@ void main() {
     routes: {
       loginRoute: (context) => const LoginView(),
       registerRoute: (context) => const RegisterView(),
-      notesRoute:(context) => const NotesView()
+      notesRoute: (context) => const NotesView()
     },
   ));
 }
@@ -77,7 +77,10 @@ class _NotesViewState extends State<NotesView> {
                   if (shouldLogout) {
                     await FirebaseAuth.instance.signOut();
                     // ignore: use_build_context_synchronously
-                    Navigator.of(context).pushNamedAndRemoveUntil(loginRoute, (route) => false);
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                      loginRoute,
+                      (route) => false,
+                    );
                   }
                   devtools.log(shouldLogout.toString());
                   break;
@@ -98,18 +101,25 @@ class _NotesViewState extends State<NotesView> {
 }
 
 Future<bool> showLogOutDialog(BuildContext context) {
-  return showDialog<bool>(context: context, builder: (context) {
-    return AlertDialog(
-      title: const Text('Sign out'),
-      content: const Text('Are you sure you want to log?'),
-      actions: [
-        TextButton(onPressed: () {
-          Navigator.of(context).pop(false);
-        }, child: const Text('Cancel')),
-        TextButton(onPressed: () {
-          Navigator.of(context).pop(true);
-        }, child: const Text('Log out'))
-      ],
-    );
-  },).then((value) => value ?? false);
+  return showDialog<bool>(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text('Sign out'),
+        content: const Text('Are you sure you want to log?'),
+        actions: [
+          TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+              child: const Text('Cancel')),
+          TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+              child: const Text('Log out')),
+        ],
+      );
+    },
+  ).then((value) => value ?? false);
 }

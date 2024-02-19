@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:mynotes/constants/routes.dart';
 import 'package:mynotes/firebase_options.dart';
+import 'package:mynotes/utilities/show_error_dialog.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -71,6 +72,7 @@ class _LoginViewState extends State<LoginView> {
                             email: email,
                             password: password,
                           );
+                          // ignore: use_build_context_synchronously
                           Navigator.of(context).pushNamedAndRemoveUntil(
                             notesRoute,
                             (route) => false,
@@ -78,12 +80,36 @@ class _LoginViewState extends State<LoginView> {
                           devtools.log(userCredentials.toString());
                         } on FirebaseAuthException catch (e) {
                           if (e.code == 'invalid-credential') {
-                            devtools.log('Invalid Credentials');
+                            // ignore: use_build_context_synchronously
+                            await showErrorDialog(
+                              context,
+                              'Invalid credentials',
+                            );
                           } else if (e.code == 'user-not-found') {
-                            devtools.log('User not found');
+                            // ignore: use_build_context_synchronously
+                            await showErrorDialog(
+                              context,
+                              'User not found',
+                            );
+                          } else if (e.code == 'wrong-password') {
+                            // ignore: use_build_context_synchronously
+                            await showErrorDialog(
+                              context,
+                              'Wrong password',
+                            );
+                          } else {
+                            // ignore: use_build_context_synchronously
+                            await showErrorDialog(
+                              context,
+                              'Error: ${e.code}',
+                            );
                           }
                         } catch (e) {
-                          devtools.log("Something went wrong");
+                          // ignore: use_build_context_synchronously
+                            await showErrorDialog(
+                              context,
+                              e.toString(),
+                            );
                           // devtools.log(e.code);
                           // devtools.log(e.runtimeType);
                           // devtools.log(e);
