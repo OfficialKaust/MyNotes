@@ -15,7 +15,8 @@ void main() {
     home: const HomePage(),
     routes: {
       '/login/': (context) => const LoginView(),
-      '/register/': (context) => const RegisterView()
+      '/register/': (context) => const RegisterView(),
+      '/notes/':(context) => const NotesView()
     },
   ));
 }
@@ -33,7 +34,7 @@ class HomePage extends StatelessWidget {
         switch (snapshot.connectionState) {
           case ConnectionState.done:
             final user = FirebaseAuth.instance.currentUser;
-            print(user);
+            devtools.log(user.toString());
             if (user != null) {
               if (user.emailVerified) {
                 return const NotesView();
@@ -75,7 +76,7 @@ class _NotesViewState extends State<NotesView> {
                   if (shouldLogout) {
                     await FirebaseAuth.instance.signOut();
                     // ignore: use_build_context_synchronously
-                    Navigator.of(context).pushNamedAndRemoveUntil('/login/', (_) => false);
+                    Navigator.of(context).pushNamedAndRemoveUntil('/login/', (route) => false);
                   }
                   devtools.log(shouldLogout.toString());
                   break;

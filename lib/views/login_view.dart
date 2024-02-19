@@ -67,19 +67,25 @@ class _LoginViewState extends State<LoginView> {
                         try {
                           final userCredentials = await FirebaseAuth.instance
                               .signInWithEmailAndPassword(
-                                  email: email, password: password);
-                          print(userCredentials);
+                            email: email,
+                            password: password,
+                          );
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                            '/notes/',
+                            (route) => false,
+                          );
+                          devtools.log(userCredentials.toString());
                         } on FirebaseAuthException catch (e) {
-                          // print(e.code);
                           if (e.code == 'invalid-credential') {
-                            print('Invalid Credentials');
+                            devtools.log('Invalid Credentials');
                           } else if (e.code == 'user-not-found') {
-                            print('User not found');
+                            devtools.log('User not found');
                           }
                         } catch (e) {
-                          print("Something went wrong");
-                          // print(e.runtimeType);
-                          // print(e);
+                          devtools.log("Something went wrong");
+                          // devtools.log(e.code);
+                          // devtools.log(e.runtimeType);
+                          // devtools.log(e);
                         }
                       },
                       child: const Text('Login')),
